@@ -1,0 +1,79 @@
+[project]
+name = "python-uv-template"
+version = "0.1.0"
+description = "A Project Template of Python with uv"
+authors = [{ name = "杜世橋 Du Shiqiao", email = "lucidfrontier.45@gmail.com" }]
+requires-python = ">=3.12"
+dependencies = ["fastapi>=0.112.2"]
+
+[project.optional-dependencies]
+server = ["uvicorn>=0.30.6"]
+
+[project.scripts]
+app = "app.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/app"]
+
+[tool.uv]
+managed = true
+dev-dependencies = [
+    "uvicorn>=0.30.6",
+    "ruff>=0.6.2",
+    "pyright>=1.1.377",
+    "pytest-cov>=5.0.0",
+    "pytest-xdist>=3.6.1",
+    "taskipy>=1.13.0",
+]
+
+[tool.taskipy.tasks]
+pyright_lint = "pyright ."
+ruff_format = "ruff format ."
+ruff_lint = "ruff check ."
+ruff_fix = "ruff check --fix ."
+test = "pytest tests -n auto --cov=app --cov-report=term --cov-report=xml"
+format = "task ruff_fix && task ruff_format"
+lint = "task ruff_lint && task pyright_lint"
+check = "task format && task lint && task test"
+
+[tool.pytest.ini_options]
+filterwarnings = ["ignore::FutureWarning"]
+
+[tool.ruff]
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "F",
+    "W",
+    "I",
+    "B",
+    "RUF",
+    "UP",
+    "N",
+    "SIM",
+    "A",
+    "S",
+    "DTZ",
+    "PIE",
+    "PLE",
+]
+# add directory names to exclude from analysis
+exclude = ["tests/**/*", "deps/**/*"]
+
+[tool.ruff.lint.per-file-ignores]
+"*/__init__.py" = ['F401']
+
+[tool.pyright]
+pythonVersion = "3.12"
+typeCheckingMode = "basic"
+# add directory names to exclude from analysis
+ignore = ["deps"]
