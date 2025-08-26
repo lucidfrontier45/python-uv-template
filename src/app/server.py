@@ -2,9 +2,9 @@ import fastapi
 
 from .backend import hello
 
-app = fastapi.FastAPI()
+webapp = fastapi.FastAPI()
 
 
-@app.get("/")
+@webapp.get("/")
 def index():
     return hello()

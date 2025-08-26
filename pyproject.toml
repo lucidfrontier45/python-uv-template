@@ -8,6 +8,7 @@ dependencies = ["fastapi>=0.116.1"]
 
 [project.optional-dependencies]
 server = ["uvicorn>=0.35.0"]
+awslambda = ["mangum>=0.19.0"]
 
 [project.scripts]
 app = "app.cli:main"
