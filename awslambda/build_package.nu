@@ -6,7 +6,7 @@ def main [
     --help
 ] {
     if $help {
-        print "Usage: build_awslambda_package.nu [--python-version <version>] [--python-arch <arch>]"
+        print "Usage: build_package.nu [--python-version <version>] [--python-arch <arch>]"
         print "Python Version: default=3.13"
         print "Python Architecture: default=x86_64, options=x86_64 or aarch64"
         return
@@ -16,15 +16,15 @@ def main [
     let python_platform = $"($python_arch)-manylinux_2_34"
     let pyversion = $"py($python_version | str replace '.' '')"
     let target_file_name = $"awslambda_package-($python_arch)-($pyversion).zip"
-    let target_file =  ($env.PWD | path join $target_file_name)
+    let target_file =  [$env.PWD, $target_file_name] | path join
     let lock_file = ".requirements.lock"
     let tmp_dir = ".lambda_build_tmp"
     rm -rf $target_file $tmp_dir $lock_file
 
     # Install dependencies to lambda_package directory
-    uv export --no-dev --no-emit-project --frozen --extra awslambda  | save -f $lock_file
+    uv export --no-dev --no-emit-project --frozen --all-extras | save -f $lock_file
     uv pip install --python-version $python_version --python-platform $python_platform --target $tmp_dir -r $lock_file .
-    cp awslambda.py $tmp_dir
+    cp (["awslambda", "run.sh"] | path join) $tmp_dir
 
     # Create zip
     cd $tmp_dir

@@ -5,7 +5,7 @@ python_version="3.13"
 python_arch="x86_64"
 
 # Parse command line options
-TEMP=$(getopt -o v:a:h --long python-version:,python-arch:,help -n 'build_lambda_package.sh' -- "$@")
+TEMP=$(getopt -o v:a:h --long python-version:,python-arch:,help -n 'build_package.sh' -- "$@")
 
 if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
 
@@ -31,15 +31,16 @@ done
 python_platform="${python_arch}-manylinux_2_34"
 pyversion="$(echo py${python_version} | tr -d '.')"
 target_file_name="awslambda_package-${python_arch}-${pyversion}.zip"
+
 target_file="${PWD}/${target_file_name}"
 lock_file=".requirements.lock"
 tmp_dir=".lambda_tmp"
 rm -fr ${target_file} ${tmp_dir} ${lock_file}
 
 # install to tmp_dir
-uv export --no-dev --no-emit-workspace --frozen --extra awslambda > ${lock_file}
+uv export --no-dev --no-emit-workspace --frozen --all-extras > ${lock_file}
 uv pip install --python-platform ${python_platform} --python-version ${python_version} --target ${tmp_dir} -r ${lock_file} .
-cp awslambda.py ${tmp_dir}
+cp awslambda/run.sh ${tmp_dir}
 
 # create zip package
 cd ${tmp_dir}

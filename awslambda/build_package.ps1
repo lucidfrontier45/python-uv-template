@@ -6,7 +6,7 @@ Param(
 
 # show help if -h is passed
 if ($h) {
-    Write-Host "Usage: build_lambda_package.ps1 [-PythonVersion <version>] [-PythonArch <arch>]"
+    Write-Host "Usage: build_package.ps1 [-PythonVersion <version>] [-PythonArch <arch>]"
     Write-Host "Python Version: default=3.13"
     Write-Host "Python Architecture: default=x86_64, options=x86_64 or aarch64"
     exit
@@ -29,9 +29,9 @@ if (Test-Path -Path $targetFileName) {
 }
 
 # install dependencies to lambda_package directory
-uv export --no-dev --no-emit-project --frozen --extra awslambda > $lockFile
+uv export --no-dev --no-emit-project --frozen --all-extras > $lockFile
 uv pip install --python-version $PythonVersion --python-platform $pythonPlatform --target $tmpDir -r $lockFile .
-Copy-Item -Path awslambda.py -Destination $tmpDir
+Copy-Item -Path (Join-Path -Path "awslambda" -ChildPath "run.sh") -Destination $tmpDir
 
 # create lambda_package.zip
 Set-Location -Path $tmpDir

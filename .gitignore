@@ -131,4 +131,6 @@ dmypy.json
 .vscode/*
 !.vscode/settings.json
 !.vscode/extensions.json
-uv.lock
+
+# for library project, include lockfile
+# uv.lock

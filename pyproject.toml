@@ -4,11 +4,7 @@ version = "0.1.0"
 description = "A Project Template of Python with uv"
 authors = [{ name = "杜世橋 Du Shiqiao", email = "lucidfrontier.45@gmail.com" }]
 requires-python = ">=3.13"
-dependencies = ["fastapi>=0.116.1"]
-
-[project.optional-dependencies]
-server = ["uvicorn>=0.35.0"]
-awslambda = ["mangum>=0.19.0"]
+dependencies = ["fastapi>=0.116.1", "uvicorn[standard]>=0.35.0"]
 
 [project.scripts]
 app = "app.cli:main"
@@ -23,7 +19,6 @@ module-name = ["app"]
 [tool.uv]
 managed = true
 dev-dependencies = [
-    "uvicorn>=0.30.6",
     "pyright>=1.1.377",
     "pytest-cov>=6.2.1",
     "pytest-xdist>=3.6.1",

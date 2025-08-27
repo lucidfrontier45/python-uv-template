@@ -56,3 +56,18 @@ check = "task format && task lint && task test"
 # Build Docker Image
 
 Please check the `Dockerfile` for how to use multi-stage build with uv.
+It also support AWS Lambda with AWS Lambda Web Adapter.
+
+# Build AWS Lambda Zip Package
+
+Use one of the following scripts.
+
+```sh
+bash awslambda/build_package.sh --python-version 3.13 --python-arch aarch64
+nu awslambda/build_package.sh --python-version 3.13 --python-arch aarch64
+pwsh awslambda/build_package.ps1 -PythonVersion 3.13 -PythonArch aarch64
+```
+
+It requires your managed runtime is correctly configured to support AWS Lambda Web Adapter.
+
+See https://github.com/awslabs/aws-lambda-web-adapter?tab=readme-ov-file#lambda-functions-packaged-as-zip-package-for-aws-managed-runtimes
