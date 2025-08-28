@@ -1,17 +1,22 @@
 #---------builder------------
-FROM python:3.13-slim-bookworm AS builder
+FROM --platform=$BUILDPLATFORM python:3.13-slim AS builder
 WORKDIR /project
 
+ARG TARGETOS
+ARG TARGETARCH
+RUN echo "Building for $TARGETOS/$TARGETARCH"
+
 # install uv
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
+RUN apt update && apt install -y curl
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+ENV PATH="/root/.local/bin:$PATH"
 
-# install dependencies (no lockfile)
-# COPY pyproject.toml src /project/
-# RUN uv sync --no-dev --all-extras --no-install-project
+# build package
+WORKDIR /project
+COPY pyproject.toml uv.lock build.sh /project/
+COPY src /project/src
 
-# install dependencies (with lockfile)
-COPY pyproject.toml uv.lock /project/
-RUN uv sync --no-dev --all-extras --no-install-project --frozen
+RUN bash build.sh
 
 #---------runner------------
 FROM python:3.13-slim-bookworm AS runner
@@ -19,13 +24,8 @@ WORKDIR /project
 
 # add AWS Lambda Web Adapter settings
 COPY --from=public.ecr.aws/awsguru/aws-lambda-adapter:0.9.1 /lambda-adapter /opt/extensions/lambda-adapter
-ENV AWS_LAMBDA_EXEC_WRAPPER=/opt/bootstrap
-ENV PORT=8080
 
-COPY --from=builder /project/.venv /project/.venv
-ENV PATH=/project/.venv/bin:$PATH
-
-COPY src/app /project/app
+COPY --from=builder /project/package /project
 
 ENV N_WORKERS=1
 
@@ -33,6 +33,6 @@ SHELL ["/bin/bash", "-c"]
 CMD python -m uvicorn \
     --access-log \
     --host 0.0.0.0 \
-    --port ${PORT} \
+    --port 8080 \
     --workers ${N_WORKERS} \
     app.server:webapp

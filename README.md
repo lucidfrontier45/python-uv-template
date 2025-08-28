@@ -56,7 +56,7 @@ check = "task format && task lint && task test"
 # Build Docker Image
 
 Please check the `Dockerfile` for how to use multi-stage build with uv.
-It also support AWS Lambda with AWS Lambda Web Adapter.
+It also support AWS Lambda with AWS Lambda Web Adapter as well as multi-platform image with cross build approach.
 
 # Build AWS Lambda Zip Package
 
