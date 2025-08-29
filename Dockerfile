@@ -30,5 +30,4 @@ COPY run.sh /project/
 
 ENV N_WORKERS=1
 
-SHELL ["/bin/bash", "-c"]
-CMD ["./run.sh"]
+CMD ["/bin/bash", "run.sh"]
