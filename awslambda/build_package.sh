@@ -38,7 +38,7 @@ tmp_dir=".lambda_tmp"
 rm -fr ${target_file} ${tmp_dir} ${lock_file}
 
 # install to tmp_dir
-uv export --no-dev --no-emit-workspace --frozen --all-extras > ${lock_file}
+uv export --no-dev --no-emit-project --frozen --all-extras > ${lock_file}
 uv pip install --python-platform ${python_platform} --python-version ${python_version} --target ${tmp_dir} --only-binary :all: -r ${lock_file}
 uv pip install --python-platform ${python_platform} --python-version ${python_version} --target ${tmp_dir} .
 cp run.sh ${tmp_dir}
