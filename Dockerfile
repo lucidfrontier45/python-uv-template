@@ -19,7 +19,7 @@ COPY src /project/src
 RUN bash build.sh
 
 #---------runner------------
-FROM python:3.13-slim-bookworm AS runner
+FROM python:3.13-slim AS runner
 WORKDIR /project
 
 # add AWS Lambda Web Adapter settings
