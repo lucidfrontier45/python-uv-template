@@ -25,12 +25,11 @@ def main [
     uv export --no-dev --no-emit-project --frozen --all-extras | save -f $lock_file
     uv pip install --python-version $python_version --python-platform $python_platform --target $tmp_dir --only-binary :all: -r $lock_file
     uv pip install --python-version $python_version --python-platform $python_platform --target $tmp_dir .
+    rm -rf ($tmp_dir | path join "bin")
     cp run.sh $tmp_dir
 
     # Create zip
-    cd $tmp_dir
-    7z a $target_file .
-    cd ..
+    lzpb $tmp_dir $target_file
 
     # Clean up
     rm -rf $tmp_dir $lock_file

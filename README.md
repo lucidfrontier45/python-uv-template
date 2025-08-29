@@ -71,3 +71,7 @@ pwsh awslambda/build_package.ps1 -PythonVersion 3.13 -PythonArch aarch64
 It requires your managed runtime is correctly configured to support AWS Lambda Web Adapter.
 
 See https://github.com/awslabs/aws-lambda-web-adapter?tab=readme-ov-file#lambda-functions-packaged-as-zip-package-for-aws-managed-runtimes
+
+The scripts internally use `lzpb` to make sure `run.sh` and `bootstrap` have exec permission.
+You can get the latest `lzpb` binary here.
+https://github.com/lucidfrontier45/lzpb/releases

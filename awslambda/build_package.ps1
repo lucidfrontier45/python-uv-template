@@ -32,12 +32,11 @@ if (Test-Path -Path $targetFileName) {
 uv export --no-dev --no-emit-project --frozen --all-extras > $lockFile
 uv pip install --python-version $PythonVersion --python-platform $pythonPlatform --target $tmpDir --only-binary :all: -r $lockFile
 uv pip install --python-version $PythonVersion --python-platform $pythonPlatform --target $tmpDir .
+Remove-Item -Recurse -Force -Path (Join-Path -Path $tmpDir -ChildPath "bin")
 Copy-Item -Path run.sh -Destination $tmpDir
 
 # create lambda_package.zip
-Set-Location -Path $tmpDir
-7z a $targetFile .
-Set-Location -Path ..
+lzpb $tmpDir $targetFile
 
 # clean up
 Remove-Item -Recurse -Force -Path @($tmpDir, $lockFile)

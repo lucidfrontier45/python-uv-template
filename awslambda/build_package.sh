@@ -41,12 +41,11 @@ rm -fr ${target_file} ${tmp_dir} ${lock_file}
 uv export --no-dev --no-emit-project --frozen --all-extras > ${lock_file}
 uv pip install --python-platform ${python_platform} --python-version ${python_version} --target ${tmp_dir} --only-binary :all: -r ${lock_file}
 uv pip install --python-platform ${python_platform} --python-version ${python_version} --target ${tmp_dir} .
+rm -rf ${tmp_dir}/bin
 cp run.sh ${tmp_dir}
 
 # create zip package
-cd ${tmp_dir}
-zip -r --exclude="*__pycache__/*" ${target_file} .
-cd ..
+lzpb ${tmp_dir} ${target_file}
 
 # clean up
 rm -fr ${tmp_dir} ${lock_file}
