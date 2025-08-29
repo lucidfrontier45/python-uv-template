@@ -23,8 +23,9 @@ def main [
 
     # Install dependencies to lambda_package directory
     uv export --no-dev --no-emit-project --frozen --all-extras | save -f $lock_file
-    uv pip install --python-version $python_version --python-platform $python_platform --target $tmp_dir -r $lock_file .
-    cp (["awslambda", "run.sh"] | path join) $tmp_dir
+    uv pip install --python-version $python_version --python-platform $python_platform --target $tmp_dir --only-binary :all: -r $lock_file
+    uv pip install --python-version $python_version --python-platform $python_platform --target $tmp_dir .
+    cp run.sh $tmp_dir
 
     # Create zip
     cd $tmp_dir

@@ -26,13 +26,9 @@ WORKDIR /project
 COPY --from=public.ecr.aws/awsguru/aws-lambda-adapter:0.9.1 /lambda-adapter /opt/extensions/lambda-adapter
 
 COPY --from=builder /project/package /project
+COPY run.sh /project/
 
 ENV N_WORKERS=1
 
 SHELL ["/bin/bash", "-c"]
-CMD python -m uvicorn \
-    --access-log \
-    --host 0.0.0.0 \
-    --port 8080 \
-    --workers ${N_WORKERS} \
-    app.server:webapp
+CMD ["./run.sh"]

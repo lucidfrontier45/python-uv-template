@@ -30,8 +30,9 @@ if (Test-Path -Path $targetFileName) {
 
 # install dependencies to lambda_package directory
 uv export --no-dev --no-emit-project --frozen --all-extras > $lockFile
-uv pip install --python-version $PythonVersion --python-platform $pythonPlatform --target $tmpDir -r $lockFile .
-Copy-Item -Path (Join-Path -Path "awslambda" -ChildPath "run.sh") -Destination $tmpDir
+uv pip install --python-version $PythonVersion --python-platform $pythonPlatform --target $tmpDir --only-binary :all: -r $lockFile
+uv pip install --python-version $PythonVersion --python-platform $pythonPlatform --target $tmpDir .
+Copy-Item -Path run.sh -Destination $tmpDir
 
 # create lambda_package.zip
 Set-Location -Path $tmpDir
