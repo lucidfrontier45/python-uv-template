@@ -22,14 +22,15 @@ dev-dependencies = [
     "pyright>=1.1.377",
     "pytest-cov>=6.2.1",
     "pytest-xdist>=3.6.1",
+    "ruff>=0.12.11",
     "taskipy>=1.13.0",
 ]
 
 [tool.taskipy.tasks]
 pyright_lint = "pyright ."
-uv_format = "uv format ."
-uv_lint = "uv check ."
-uv_fix = "uv check --fix ."
+uv_format = "ruff format ."
+uv_lint = "ruff check ."
+uv_fix = "ruff check --fix ."
 test = "pytest tests -n auto --cov=app --cov-report=term --cov-report=xml"
 format = "task uv_fix && task uv_format"
 lint = "task uv_lint && task pyright_lint"
