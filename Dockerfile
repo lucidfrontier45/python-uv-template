@@ -1,15 +1,15 @@
+#---------uv------------------
+FROM --platform=$BUILDPLATFORM ghcr.io/astral-sh/uv:latest AS uv_host 
+
 #---------builder------------
 FROM --platform=$BUILDPLATFORM python:3.13-slim AS builder
 WORKDIR /project
-
 ARG TARGETOS
 ARG TARGETARCH
 RUN echo "Building for $TARGETOS/$TARGETARCH"
 
 # install uv
-RUN apt update && apt install -y curl
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh
-ENV PATH="/root/.local/bin:$PATH"
+COPY --from=uv_host /uv /usr/bin/uv
 
 # build package
 WORKDIR /project
