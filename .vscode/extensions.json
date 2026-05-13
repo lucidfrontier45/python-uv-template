@@ -1,9 +1,9 @@
 {
-    "recommendations": [
-        "ryanluker.vscode-coverage-gutters",
-        "ms-python.python",
-        "littlefoxteam.vscode-python-test-adapter",
-        "charliermarsh.ruff",
-        "meta.pyrefly"
-    ]
+  "recommendations": [
+    "ryanluker.vscode-coverage-gutters",
+    "ms-python.python",
+    "littlefoxteam.vscode-python-test-adapter",
+    "charliermarsh.ruff",
+    "astral-sh.ty",
+  ],
 }

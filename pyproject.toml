@@ -10,15 +10,10 @@ dependencies = ["fastapi>=0.116.1", "uvicorn[standard]>=0.35.0"]
 app = "app.cli:main"
 
 [dependency-groups]
-dev = [
-    "poethepoet>=0.39.0",
-    "pyrefly>=0.46.1",
-    "pytest-cov>=7.0.0",
-    "ruff>=0.14.10",
-]
+dev = ["poethepoet>=0.45.0", "pytest-cov>=7.1.0", "ruff>=0.15.12", "ty>=0.0.35"]
 
 [build-system]
-requires = ["uv_build>=0.9.17,<0.10.0"]
+requires = ["uv_build>=0.11.14,<0.12.0"]
 build-backend = "uv_build"
 
 [tool.uv]
@@ -28,12 +23,9 @@ managed = true
 module-name = ["app"]
 
 [tool.poe.tasks]
-ruff_check = "ruff check ."
-ruff_fix = "ruff check --fix ."
-ruff_format = "ruff format ."
-pyrefly_check = "pyrefly check ."
-check = ["ruff_check", "pyrefly_check"]
-format = ["ruff_fix", "ruff_format"]
+check = "ty check --fix ."
+lint = "ruff check --fix ."
+format = "ruff format ."
 test = "pytest tests -n auto --cov=app --cov-report=term --cov-report=xml"
 
 [tool.pytest.ini_options]
@@ -64,6 +56,3 @@ exclude = ["tests/**/*", "deps/**/*"]
 
 [tool.ruff.lint.per-file-ignores]
 "*/__init__.py" = ['F401']
-
-[tool.pyrefly]
-python-version = "3.13"
