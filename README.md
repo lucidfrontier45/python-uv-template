@@ -53,6 +53,7 @@ test = "pytest tests -n auto --cov=app --cov-report=term --cov-report=xml"
 
 Please check the `Dockerfile` for how to use multi-stage build with uv.
 It also support AWS Lambda with AWS Lambda Web Adapter as well as multi-platform image with cross build approach.
+`Dockerfile.lambda_native` is used to build a image that uses AWS Lambda native protocol.
 
 # Build AWS Lambda Zip Package
 
