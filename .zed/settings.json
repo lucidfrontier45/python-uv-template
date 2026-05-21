@@ -5,13 +5,14 @@
 {
   "languages": {
     "Python": {
-      "language_servers": ["ty", "ruff", "!basedpyright"],
+      "language_servers": [
+        "ty",
+        "ruff",
+        "!basedpyright"
+      ],
       "formatter": [
         {
           "code_action": "source.organizeImports.ruff",
-        },
-        {
-          "code_action": "source.fixAll.ruff",
         },
         {
           "language_server": {
